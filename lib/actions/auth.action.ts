@@ -11,25 +11,25 @@ export async function signUp(params: SignUpParams) {
      try{
          const userRecord = await db.collection('users').doc(uid).get();
 
-         if(userRecord.exists){
+         if(userRecord.exists)
              return{
                  success: false,
-                 message:"Email already exists.Please sign in instead"
-             }
-         }
+                 message:"Email already exists.Please sign in instead",
+             };
+
 
          await db.collection('users').doc(uid).set({
              name,email
-         })
+         });
 
          return{
              success: true,
              message:'Account successfully registered.Please sign in.'
          }
-     }catch(e: any){
-         console.error('Error creating a user',e);
+     }catch(error: any){
+         console.error('Error creating a user',error);
 
-         if(e.code === 'auth/email-already-exists'){
+         if(error.code === 'auth/email-already-exists'){
              return {
                  success: false,
                  message: `User already exists`,
